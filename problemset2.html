@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+	<body>
+		<canvas id = "mycanvas" width ="800" height = "400">
+		</canvas>
+		<script>
+
+			const canvas = document.getElementById("mycanvas");
+			const context = canvas.getContext("2d");
+			const colorArray = ['#9ACD32', '#EE82EE', '	#008080', '#00FF7F','#FF7F50','	#8B008B','	#FF8C00'];
+			const point = [];
+			const ForEach = function(arr, func){
+				const helper = function(index){
+					if (index === arr.length){
+						return;
+					}
+
+					func(arr[index]);
+
+					helper(index + 1);
+				};
+				helper(0);
+			};
+			const render = function(){
+				context.clearRect(0, 0, canvas.width, canvas.height);
+				ForEach(point, function(point){
+					context.fillStyle = point.color;
+					context.fillRect(point.x, point.y, point.width, point.height);
+				});
+			};
+			const random = function(num) {
+						return Math.floor(Math.random() * num) + 1;
+			};
+			const createPoints = function(count, canvasWidth, canvasHeight) {
+				if(count === 0)
+					return;
+				point[point.length] = {
+							x: random(canvasWidth - 30),
+							y: random(canvasHeight - 30),
+							width: 30,
+							height: 30,
+							xDelta: 1,
+							yDelta: 1,
+							color: colorArray[random(colorArray.length)-1]
+						};
+				count--;
+				createPoints(count, canvasWidth, canvasHeight);
+			};
+			const updateData = function(){
+				ForEach(point, function(point){
+					if(point.x === canvas.width - point.width){
+						point.xDelta = -1;
+						point.color = colorArray[random(colorArray.length)-1];
+					}
+
+					if(point.x === 0){
+						point.xDelta = 1;
+						point.color = colorArray[random(colorArray.length)-1];
+					}
+
+					if(point.y === canvas.height - point.height){
+						point.yDelta = -1;
+						point.color = colorArray[random(colorArray.length)-1];
+					}
+					if(point.y === 0){
+						point.yDelta = 1;
+						point.color = colorArray[random(colorArray.length)-1];
+					}
+
+					point.x += point.xDelta;
+					point.y += point.yDelta;
+				});
+			};
+			const loop = function(){
+				render();
+				updateData();
+				requestAnimationFrame(loop);
+			};
+			createPoints(10, canvas.width, canvas.height);
+			loop();
+		</script>
+	</body>
+</html>

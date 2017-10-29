@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+	<body>
+		<canvas id = "mycanvas" width ="800" height = "400">
+		</canvas>
+		<script>
+
+			const canvas = document.getElementById("mycanvas");
+			const context = canvas.getContext("2d");
+			const colorArray = ['grey', 'pink', 'yellow'];
+			const point = [];
+			const ForEach = function(arr, func){
+				const helper = function(index){
+					if (index === arr.length){
+						return;
+					}
+
+					func(arr[index]);
+
+					helper(index + 1);
+				};
+				helper(0);
+			};
+			const nkarel = function(){
+				ForEach(point, function(point){
+					context.fillStyle = point.color;
+					context.fillRect(point.x, point.y, point.width, point.height);
+				});
+			};
+
+			const Points = function(count, canvasWidth, canvasHeight) {
+				const random = function(num) {
+						return Math.floor(Math.random() * num) + 1;
+					};
+				if(count === 0)
+					return;
+				point[point.length] = {
+							x: random(canvasWidth - 30),
+							y: random(canvasHeight - 30),
+							width: 30,
+							height: 30,
+							xDelta: 1,
+							yDelta: 1,
+							color: colorArray[random(3)-1]
+						};
+				count--;
+				Points(count, canvasWidth, canvasHeight);
+			};
+			 Points(10, canvas.width, canvas.height);
+			nkarel();
+		</script>
+	</body>
+</html>
